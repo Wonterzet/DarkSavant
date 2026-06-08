@@ -110,9 +110,10 @@
         .log-doc-body::-webkit-scrollbar-thumb{background:var(--citrine-dim);}
         /* GLITCH */
         #glitchLayer{position:fixed;inset:0;pointer-events:none;z-index:9999;display:none;}
-
+        /* WELCOME */
+        .welcome{position:fixed;bottom:110px;right:30px;font-size:10px;color:rgba(228,208,10,0.2);letter-spacing:2px;text-align:right;line-height:1.8;z-index:10;}
         /* MUSIC PLAYER */
-        #musicPlayer { position:fixed; bottom:20px; left:20px; z-index:500; background:rgba(4,4,4,0.96); border:1px solid var(--citrine); box-shadow:0 0 20px var(--citrine-glow); padding:12px 14px; width:240px; display:none; }
+        #musicPlayer { position:fixed; bottom:20px; right:20px; z-index:500; background:rgba(4,4,4,0.96); border:1px solid var(--citrine); box-shadow:0 0 20px var(--citrine-glow); padding:12px 14px; width:240px; display:none; }
         #musicPlayer.show { display:block; }
         .mp-title { font-family:'Orbitron',monospace; font-size:9px; font-weight:700; letter-spacing:3px; color:var(--citrine-dim); margin-bottom:6px; }
         .mp-track { font-size:12px; letter-spacing:2px; color:var(--citrine); text-shadow:0 0 6px var(--citrine); margin-bottom:10px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
@@ -127,11 +128,6 @@
         .mp-vis { display:flex; gap:2px; align-items:flex-end; height:18px; margin-bottom:8px; }
         .mp-bar { width:3px; background:var(--citrine); border-radius:1px 1px 0 0; opacity:0.7; animation:mpBar 0.6s ease-in-out infinite alternate; }
         @keyframes mpBar { from{transform:scaleY(0.2);} to{transform:scaleY(1);} }
-        /* SYS TICKER — bottom right */
-        #sysTicker { position:fixed; bottom:20px; right:20px; z-index:490; width:260px; pointer-events:none; }
-        .sys-msg { font-family:'Share Tech Mono',monospace; font-size:10px; letter-spacing:1px; color:rgba(228,208,10,0.18); text-align:right; line-height:1.7; opacity:0; transition:opacity 0.4s ease; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-        .sys-msg.visible { opacity:1; }
-        .sys-msg.red { color:rgba(220,40,40,0.28); }
         /* BOOT SCREEN */
         #bootScreen{position:fixed;inset:0;z-index:10000;background:#050505;display:flex;align-items:center;justify-content:center;}
         #bootScreen.fade-out{animation:bootFade 0.8s ease forwards;}
@@ -323,14 +319,18 @@
     <!-- GLITCH -->
     <canvas id="glitchLayer"></canvas>
 
+    <!-- WELCOME -->
+    <div class="welcome"> СИСТЕМА АКТИВНА<br> АВТОРИЗАЦИЯ ТРЕБУЕТСЯ<br> ДЛЯ ДОСТУПА К ЛОГАМ </div>
+
     <!-- MUSIC PLAYER -->
     <div id="musicPlayer">
-        <div class="mp-title">// AUDIO MODULE</div>
+        <div class="mp-title">// АУДИО-МОДУЛЬ</div>
         <div class="mp-vis" id="mpVis"></div>
         <div class="mp-track">Mainframe</div>
         <div class="mp-controls">
-            <button class="mp-btn" id="mpPlayStopBtn" onclick="togglePlayStop()">■ STOP</button>
-            <button class="mp-btn" onclick="musicReset()">↺ RESET</button>
+            <button class="mp-btn" onclick="musicRestart()">↺ ЗАНОВО</button>
+            <button class="mp-btn" onclick="musicPlay()">▶ ПРОДОЛЖИТЬ</button>
+            <button class="mp-btn" onclick="musicStop()">■ СТОП</button>
         </div>
         <div class="mp-vol-row">
             <span class="mp-vol-label">VOL</span>
@@ -339,18 +339,14 @@
         </div>
     </div>
 
-    <!-- SYS TICKER -->
-    <div id="sysTicker">
-        <div class="sys-msg" id="sysMsg1"></div>
-        <div class="sys-msg" id="sysMsg2"></div>
-        <div class="sys-msg" id="sysMsg3"></div>
-    </div>
-
     <!-- hidden audio -->
     <audio id="bgAudio" loop>
         <source src="417_Mainframe.mp3" type="audio/mpeg">
     </audio>
-
+    <!-- Sound Effect -->
+    <audio id="clickSound" preload="auto">
+        <source src="75305337ef8f53f.mp3" type="audio/mpeg">
+    </audio>
 
     <script>
         /* LOGO ANIMATION */
@@ -433,24 +429,29 @@
         }, 5300);
 
         function launchMain(){
+            playClickSound();
             document.getElementById('bootScreen').classList.add('fade-out');
             document.getElementById('mainBg').classList.add('active');
             setTimeout(()=>{
                 document.getElementById('bootScreen').style.display='none';
                 startMusic();
                 startGlitchCycles();
-                startTicker();
             },800);
         }
 
         /* MUSIC */
         const audio = document.getElementById('bgAudio');
         audio.volume = 0.5;
-        let musicPlaying = false;
+
+        /* CLICK SOUND */
+        const clickAudio = document.getElementById('clickSound');
+        function playClickSound(){
+            clickAudio.currentTime = 0;
+            clickAudio.play().catch(()=>{});
+        }
 
         function startMusic(){
             audio.play().then(()=>{
-                musicPlaying = true;
                 document.getElementById('musicPlayer').classList.add('show');
                 buildVis();
             }).catch(()=>{
@@ -459,26 +460,14 @@
             });
         }
 
-        function togglePlayStop(){
-            const btn = document.getElementById('mpPlayStopBtn');
-            if(musicPlaying){
-                audio.pause();
-                musicPlaying = false;
-                btn.textContent = '▶ START';
-            } else {
-                audio.play();
-                musicPlaying = true;
-                btn.textContent = '■ STOP';
-            }
+        function musicRestart(){
+            audio.currentTime=0;
+            audio.play();
         }
 
-        function musicReset(){
-            audio.currentTime = 0;
-            if(!musicPlaying){
-                audio.play();
-                musicPlaying = true;
-                document.getElementById('mpPlayStopBtn').textContent = '■ STOP';
-            }
+        function musicStop(){
+            audio.pause();
+            audio.currentTime=0;
         }
 
         function setVolume(v){
@@ -501,75 +490,6 @@
             }
         }
 
-        /* SYS TICKER */
-        const SYS_MESSAGES = [
-            { t:'> SCANNING: core_mem_0x7FFE... [FAULT]', red:true },
-            { t:'> ATTEMPT: reload damaged_module_03', red:false },
-            { t:'> SEARCH: lost_packet_ID_4481... TIMEOUT', red:true },
-            { t:'> REBOOT: neural_subsystem_B... FAILED', red:true },
-            { t:'> INTEGRITY CHECK: sector_09 [CORRUPT]', red:true },
-            { t:'> RECOVERY: file_cluster_88 → 12% restored', red:false },
-            { t:'> PING: gateway_node_7... no response', red:true },
-            { t:'> SYNC: chronos_protocol... DESYNC', red:true },
-            { t:'> ANALYZE: error_log_delta [running...]', red:false },
-            { t:'> RESTART: proc_0x3A... [ERROR 0xDEAD]', red:true },
-            { t:'> LOCATE: missing_index_LFD005... NOT FOUND', red:true },
-            { t:'> REBUILD: fragmented_heap... 34% complete', red:false },
-            { t:'> VERIFY: checksum_mismatch in block_F3', red:true },
-            { t:'> RELINK: severed_node_chain_12... [FAIL]', red:true },
-            { t:'> TRACE: signal_origin... LOST', red:true },
-            { t:'> PATCH: sec_layer_02 applying delta_v7...', red:false },
-            { t:'> SCAN: rootkit_detect... [ANOMALY FOUND]', red:true },
-            { t:'> FLUSH: corrupted_cache_0xBF00... done', red:false },
-            { t:'> QUERY: archive_sector_LF-D... NULL RETURN', red:true },
-            { t:'> RECOMPILE: damaged_binary_45... ABORTED', red:true },
-            { t:'> LOAD: protocol_REBIRTH.dll... [HANG]', red:true },
-            { t:'> MEMORY LEAK DETECTED: addr_0x00FF12', red:true },
-            { t:'> REINIT: sensor_array_9... partial OK', red:false },
-            { t:'> DECRYPT: payload_LFD-005... key mismatch', red:true },
-            { t:'> FSCK: volume_shadow... 7 bad sectors', red:true },
-            { t:'> WATCHDOG: process_heartbeat... STALL', red:true },
-            { t:'> DEFRAG: storage_node_C... 61% complete', red:false },
-            { t:'> REROUTE: data_stream_alpha... rerouted', red:false },
-            { t:'> ALERT: unauthorized_read at 0x9E3F', red:true },
-            { t:'> FAILSAFE: trigger_condition met → standby', red:true },
-        ];
-
-        const tickerSlots = [
-            document.getElementById('sysMsg1'),
-            document.getElementById('sysMsg2'),
-            document.getElementById('sysMsg3'),
-        ];
-        let tickerQueue = [];
-        function shuffleMessages(){
-            tickerQueue = [...SYS_MESSAGES].sort(()=>Math.random()-0.5);
-        }
-        shuffleMessages();
-
-        function nextTickerMsg(){
-            if(!tickerQueue.length) shuffleMessages();
-            return tickerQueue.pop();
-        }
-
-        function tickerCycle(slotIdx){
-            const el = tickerSlots[slotIdx];
-            el.classList.remove('visible','red');
-            setTimeout(()=>{
-                const msg = nextTickerMsg();
-                el.textContent = msg.t;
-                if(msg.red) el.classList.add('red');
-                el.classList.add('visible');
-                const hold = 3000 + Math.random()*4000;
-                setTimeout(()=>{ el.classList.remove('visible'); setTimeout(()=>tickerCycle(slotIdx), 600); }, hold);
-            }, 300);
-        }
-
-        function startTicker(){
-            tickerSlots.forEach((_, i)=>{
-                setTimeout(()=>tickerCycle(i), i * 1800 + Math.random()*1200);
-            });
-        }
-
         /* CLOCK */
         function updateTime(){
             document.getElementById('timeDisplay').textContent=new Date().toTimeString().slice(0,8);
@@ -585,7 +505,7 @@
         /* TERMINAL */
         function toggleTerminal(){
             if(terminalOpen)return;
-            
+            playClickSound();
             terminalOpen=true;
             const win=document.getElementById('terminalWindow');
             win.classList.add('open');
@@ -597,7 +517,7 @@
         }
 
         function closeTerminal(){
-            
+            playClickSound();
             document.getElementById('terminalWindow').classList.remove('open');
             terminalOpen=false;
         }
@@ -659,7 +579,7 @@
         /* LOG */
         function tryOpenLog(){
             if(!logUnlocked){if(terminalOpen)printLine('> доступ запрещён. требуется /login','warn');return;}
-            
+            playClickSound();
             const p=document.getElementById('logPanel');
             if(logOpen){closeLog();return;}
             logOpen=true;
@@ -667,7 +587,7 @@
         }
 
         function closeLog(){
-            
+            playClickSound();
             document.getElementById('logPanel').classList.remove('open');
             logOpen=false;
         }
@@ -679,7 +599,7 @@
         };
 
         function openLogDoc(id){
-            
+            playClickSound();
             const doc=logDocs[id];
             document.getElementById('logDocTitle').textContent=doc.title;
             document.getElementById('logDocBody').innerHTML=doc.body|| '<span style="color:rgba(228,208,10,0.25);letter-spacing:2px;">[ ДОКУМЕНТ ПУСТ ]<br><br>██ ДАННЫЕ НЕ ЗАГРУЖЕНЫ ██</span>';
@@ -689,7 +609,7 @@
         }
 
         function closeLogDoc(){
-            
+            playClickSound();
             document.getElementById('logDoc').classList.remove('open');
         }
 
@@ -711,7 +631,7 @@
                 if(terminalOpen)printLine('> доступ запрещён','warn');
                 return;
             }
-            
+            playClickSound();
             if(objectRecordOpen===id){
                 closeObjectRecord(id);
                 return;
@@ -725,7 +645,7 @@
         }
 
         function closeObjectRecord(id,playSound=true){
-            if(playSound)
+            if(playSound)playClickSound();
             document.getElementById('objWin'+id).classList.remove('open');
             document.getElementById('btnObj'+id).classList.remove('active');
             if(objectRecordOpen===id)objectRecordOpen=null;
