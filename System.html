@@ -79,7 +79,7 @@
         .win-close{cursor:pointer;font-size:14px;font-weight:900;opacity:0.7;}
         .win-close:hover{opacity:1;}
         /* TERMINAL */
-        #terminalWindow{top:96px;left:180px;width:600px;}
+        #terminalWindow{top:96px;left:200px;width:600px;}
         .terminal-output{padding:12px;font-size:13px;line-height:1.7;color:var(--citrine); min-height:200px;max-height:340px;overflow-y:auto;flex:1;}
         .terminal-output::-webkit-scrollbar{width:4px;}
         .terminal-output::-webkit-scrollbar-thumb{background:var(--citrine-dim);}
@@ -92,7 +92,7 @@
         .terminal-prompt{color:var(--citrine);font-size:13px;white-space:nowrap;}
         .terminal-input{flex:1;background:transparent;border:none;outline:none;color:var(--citrine); font-family:'Share Tech Mono',monospace;font-size:13px;caret-color:var(--citrine);}
         /* LOG */
-        #logPanel{top:96px;left:180px;width:640px;}
+        #logPanel{top:96px;left:200px;width:640px;}
         .log-header{padding:10px 14px;border-bottom:1px solid var(--border);font-size:11px;color:var(--citrine-dim);letter-spacing:2px;flex-shrink:0;}
         .log-list{padding:10px 0;}
         .log-entry{display:flex;align-items:center;gap:10px;padding:9px 16px;cursor:pointer;transition:background 0.12s;border-left:2px solid transparent;font-size:13px;}
@@ -100,34 +100,40 @@
         .log-entry-id{color:var(--citrine-dim);font-size:11px;min-width:80px;letter-spacing:1px;}
         .log-entry-name{color:var(--citrine);letter-spacing:2px;}
         .log-entry-arrow{margin-left:auto;color:var(--citrine-dim);}
-        #logDoc{top:96px;left:220px;width:640px;max-height:70vh;z-index:300;}
+        /* Patch 3: separate doc windows instead of one shared logDoc */
+        #logDoc1{top:108px;left:205px;width:580px;max-height:68vh;z-index:310;}
+        #logDoc2{top:126px;left:230px;width:580px;max-height:68vh;z-index:311;}
+        #logDoc3{top:144px;left:255px;width:580px;max-height:68vh;z-index:312;}
         .log-doc-body{padding:16px;font-size:13px;line-height:1.8;color:var(--citrine-dim);overflow-y:auto;flex:1;}
-        #objWin1{top:120px;left:200px;width:560px;}
-        #objWin2{top:140px;left:240px;width:560px;}
-        #objWin3{top:160px;left:280px;width:560px;}
+        #objWin1{top:108px;left:205px;width:560px;}
+        #objWin2{top:126px;left:230px;width:560px;}
+        #objWin3{top:144px;left:255px;width:560px;}
         .obj-empty{padding:20px;font-size:12px;color:rgba(228,208,10,0.2);letter-spacing:2px;line-height:1.8;}
         .log-doc-body::-webkit-scrollbar{width:4px;}
         .log-doc-body::-webkit-scrollbar-thumb{background:var(--citrine-dim);}
         /* GLITCH */
         #glitchLayer{position:fixed;inset:0;pointer-events:none;z-index:9999;display:none;}
-        /* WELCOME */
-        .welcome{position:fixed;bottom:110px;right:30px;font-size:10px;color:rgba(228,208,10,0.2);letter-spacing:2px;text-align:right;line-height:1.8;z-index:10;}
-        /* MUSIC PLAYER */
-        #musicPlayer { position:fixed; bottom:20px; right:20px; z-index:500; background:rgba(4,4,4,0.96); border:1px solid var(--citrine); box-shadow:0 0 20px var(--citrine-glow); padding:12px 14px; width:240px; display:none; }
-        #musicPlayer.show { display:block; }
-        .mp-title { font-family:'Orbitron',monospace; font-size:9px; font-weight:700; letter-spacing:3px; color:var(--citrine-dim); margin-bottom:6px; }
-        .mp-track { font-size:12px; letter-spacing:2px; color:var(--citrine); text-shadow:0 0 6px var(--citrine); margin-bottom:10px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-        .mp-controls { display:flex; gap:8px; align-items:center; margin-bottom:10px; }
-        .mp-btn { font-family:'Orbitron',monospace; font-size:9px; font-weight:700; letter-spacing:2px; padding:5px 10px; border:1px solid var(--citrine); background:rgba(0,0,0,0.8); color:var(--citrine); cursor:pointer; transition:all 0.12s; clip-path:polygon(4px 0%,100% 0%,calc(100% - 4px) 100%,0% 100%); }
-        .mp-btn:hover { background:var(--citrine); color:#000; }
-        .mp-vol-row { display:flex; align-items:center; gap:8px; }
-        .mp-vol-label { font-size:9px; color:var(--citrine-dim); letter-spacing:2px; white-space:nowrap; }
-        .mp-vol { flex:1; -webkit-appearance:none; appearance:none; height:3px; background:rgba(228,208,10,0.2); outline:none; cursor:pointer; border-radius:0; }
-        .mp-vol::-webkit-slider-thumb { -webkit-appearance:none; appearance:none; width:12px; height:12px; background:var(--citrine); box-shadow:0 0 6px var(--citrine); cursor:pointer; clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%); }
-        .mp-vol::-moz-range-thumb { width:12px; height:12px; background:var(--citrine); border:none; box-shadow:0 0 6px var(--citrine); cursor:pointer; }
-        .mp-vis { display:flex; gap:2px; align-items:flex-end; height:18px; margin-bottom:8px; }
-        .mp-bar { width:3px; background:var(--citrine); border-radius:1px 1px 0 0; opacity:0.7; animation:mpBar 0.6s ease-in-out infinite alternate; }
-        @keyframes mpBar { from{transform:scaleY(0.2);} to{transform:scaleY(1);} }
+        /* Patch 1: SYS TICKER — bigger font, right bottom */
+        #sysTicker{position:fixed;bottom:22px;right:22px;z-index:490;width:320px;pointer-events:none;}
+        .sys-msg{font-family:'Share Tech Mono',monospace;font-size:13px;letter-spacing:1px;color:rgba(228,208,10,0.22);text-align:right;line-height:2.0;opacity:0;transition:opacity 0.5s ease;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+        .sys-msg.visible{opacity:1;}
+        .sys-msg.red{color:rgba(220,40,40,0.32);}
+        /* Patch 5: MUSIC PLAYER — left bottom, English */
+        #musicPlayer{position:fixed;bottom:20px;left:20px;z-index:500;background:rgba(4,4,4,0.96);border:1px solid var(--citrine);box-shadow:0 0 20px var(--citrine-glow);padding:12px 14px;width:242px;display:none;}
+        #musicPlayer.show{display:block;}
+        .mp-title{font-family:'Orbitron',monospace;font-size:9px;font-weight:700;letter-spacing:3px;color:var(--citrine-dim);margin-bottom:6px;}
+        .mp-track{font-size:12px;letter-spacing:2px;color:var(--citrine);text-shadow:0 0 6px var(--citrine);margin-bottom:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+        .mp-controls{display:flex;gap:8px;align-items:center;margin-bottom:10px;}
+        .mp-btn{font-family:'Orbitron',monospace;font-size:9px;font-weight:700;letter-spacing:2px;padding:5px 10px;border:1px solid var(--citrine);background:rgba(0,0,0,0.8);color:var(--citrine);cursor:pointer;transition:all 0.12s;clip-path:polygon(4px 0%,100% 0%,calc(100% - 4px) 100%,0% 100%);}
+        .mp-btn:hover{background:var(--citrine);color:#000;}
+        .mp-vol-row{display:flex;align-items:center;gap:8px;}
+        .mp-vol-label{font-size:9px;color:var(--citrine-dim);letter-spacing:2px;white-space:nowrap;}
+        .mp-vol{flex:1;-webkit-appearance:none;appearance:none;height:3px;background:rgba(228,208,10,0.2);outline:none;cursor:pointer;border-radius:0;}
+        .mp-vol::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:12px;height:12px;background:var(--citrine);box-shadow:0 0 6px var(--citrine);cursor:pointer;clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);}
+        .mp-vol::-moz-range-thumb{width:12px;height:12px;background:var(--citrine);border:none;box-shadow:0 0 6px var(--citrine);cursor:pointer;}
+        .mp-vis{display:flex;gap:2px;align-items:flex-end;height:18px;margin-bottom:8px;}
+        .mp-bar{width:3px;background:var(--citrine);border-radius:1px 1px 0 0;opacity:0.7;animation:mpBar 0.6s ease-in-out infinite alternate;}
+        @keyframes mpBar{from{transform:scaleY(0.2);}to{transform:scaleY(1);}}
         /* BOOT SCREEN */
         #bootScreen{position:fixed;inset:0;z-index:10000;background:#050505;display:flex;align-items:center;justify-content:center;}
         #bootScreen.fade-out{animation:bootFade 0.8s ease forwards;}
@@ -158,8 +164,13 @@
         .boot-master-bar-bg{width:100%;height:4px;background:rgba(228,208,10,0.1);border:1px solid rgba(228,208,10,0.2);overflow:hidden;}
         .boot-master-fill{height:100%;background:var(--citrine);box-shadow:0 0 8px var(--citrine);width:0%;transition:width 0.3s ease;}
         .boot-master-pct{text-align:right;font-size:10px;color:var(--citrine-dim);letter-spacing:2px;margin-bottom:12px;}
+        /* Patch 4: Boot warning */
+        #bootWarning{display:none;width:100%;text-align:center;margin-bottom:10px;padding:10px 14px;border:1px solid rgba(220,40,40,0.45);background:rgba(220,40,40,0.06);}
+        .warn-header{font-family:'Orbitron',monospace;font-size:11px;font-weight:900;letter-spacing:3px;color:var(--red);text-shadow:0 0 8px var(--red-glow);margin-bottom:5px;animation:warnFlicker 2.5s ease-in-out infinite;}
+        .warn-sub{font-size:10px;letter-spacing:1px;color:rgba(220,40,40,0.7);line-height:1.7;}
+        @keyframes warnFlicker{0%,100%{opacity:1;}48%{opacity:1;}52%{opacity:0.3;}56%{opacity:1;}}
         /* Start button */
-        #bootStartBtn{ display:none; font-family:'Orbitron',monospace;font-size:13px;font-weight:900; letter-spacing:5px;padding:12px 40px; border:1.5px solid var(--citrine);background:rgba(0,0,0,0.9);color:var(--citrine); cursor:pointer;text-transform:uppercase;transition:all 0.2s; clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%); box-shadow:0 0 16px var(--citrine-glow),inset 0 0 12px rgba(228,208,10,0.06); animation:pulse 2s ease-in-out infinite; margin-top:8px; }
+        #bootStartBtn{display:none;font-family:'Orbitron',monospace;font-size:13px;font-weight:900;letter-spacing:5px;padding:12px 40px;border:1.5px solid var(--citrine);background:rgba(0,0,0,0.9);color:var(--citrine);cursor:pointer;text-transform:uppercase;transition:all 0.2s;clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);box-shadow:0 0 16px var(--citrine-glow),inset 0 0 12px rgba(228,208,10,0.06);animation:pulse 2s ease-in-out infinite;margin-top:4px;}
         @keyframes pulse{0%,100%{box-shadow:0 0 16px var(--citrine-glow);}50%{box-shadow:0 0 32px var(--citrine),0 0 60px var(--citrine-glow);}}
         #bootStartBtn:hover{background:var(--citrine);color:#000;animation:none;box-shadow:0 0 30px var(--citrine);}
     </style>
@@ -195,6 +206,10 @@
                 <div class="boot-master-bar-bg"><div class="boot-master-fill" id="masterFill"></div></div>
             </div>
             <div class="boot-master-pct" id="masterPct">0%</div>
+            <div id="bootWarning">
+                <div class="warn-header">⚠ ВНИМАНИЕ: КРИТИЧЕСКАЯ ОШИБКА</div>
+                <div class="warn-sub">Целостность системы нарушена.<br>Запуск возможен на свой страх и риск.<br>Последствия непредсказуемы.</div>
+            </div>
             <button id="bootStartBtn" onclick="launchMain()">▶ START</button>
         </div>
     </div>
@@ -307,36 +322,53 @@
         <div class="obj-empty">[ ЗАПИСЬ ПУСТА ]</div>
     </div>
 
-    <!-- LOG DOC -->
-    <div class="win" id="logDoc">
-        <div class="win-titlebar" id="logDocTitlebar">
-            <span id="logDocTitle">LOG DOCUMENT</span>
-            <span class="win-close" onclick="closeLogDoc()">✕</span>
+    <!-- LOG DOCS (Patch 3: each log gets its own persistent window) -->
+    <div class="win" id="logDoc1">
+        <div class="win-titlebar" id="logDoc1Titlebar">
+            <span>LF-D:005 // LOG 1: Source</span>
+            <span class="win-close" onclick="closeLogDoc(1)">✕</span>
         </div>
-        <div class="log-doc-body" id="logDocBody"></div>
+        <div class="log-doc-body" id="logDocBody1"></div>
+    </div>
+    <div class="win" id="logDoc2">
+        <div class="win-titlebar" id="logDoc2Titlebar">
+            <span>LF-D:005 // LOG 2</span>
+            <span class="win-close" onclick="closeLogDoc(2)">✕</span>
+        </div>
+        <div class="log-doc-body" id="logDocBody2"></div>
+    </div>
+    <div class="win" id="logDoc3">
+        <div class="win-titlebar" id="logDoc3Titlebar">
+            <span>LF-D:005 // LOG 3</span>
+            <span class="win-close" onclick="closeLogDoc(3)">✕</span>
+        </div>
+        <div class="log-doc-body" id="logDocBody3"></div>
     </div>
 
     <!-- GLITCH -->
     <canvas id="glitchLayer"></canvas>
 
-    <!-- WELCOME -->
-    <div class="welcome"> СИСТЕМА АКТИВНА<br> АВТОРИЗАЦИЯ ТРЕБУЕТСЯ<br> ДЛЯ ДОСТУПА К ЛОГАМ </div>
-
-    <!-- MUSIC PLAYER -->
+    <!-- MUSIC PLAYER (Patch 5: left bottom, English, 2 buttons) -->
     <div id="musicPlayer">
-        <div class="mp-title">// АУДИО-МОДУЛЬ</div>
+        <div class="mp-title">// AUDIO MODULE</div>
         <div class="mp-vis" id="mpVis"></div>
         <div class="mp-track">Mainframe</div>
         <div class="mp-controls">
-            <button class="mp-btn" onclick="musicRestart()">↺ ЗАНОВО</button>
-            <button class="mp-btn" onclick="musicPlay()">▶ ПРОДОЛЖИТЬ</button>
-            <button class="mp-btn" onclick="musicStop()">■ СТОП</button>
+            <button class="mp-btn" id="mpPlayStopBtn" onclick="togglePlayStop()">■ STOP</button>
+            <button class="mp-btn" onclick="musicReset()">↺ RESET</button>
         </div>
         <div class="mp-vol-row">
             <span class="mp-vol-label">VOL</span>
             <input class="mp-vol" type="range" min="0" max="100" value="50" id="volSlider" oninput="setVolume(this.value)">
             <span class="mp-vol-label" id="volPct">50%</span>
         </div>
+    </div>
+
+    <!-- SYS TICKER (Patch 1: right bottom, larger) -->
+    <div id="sysTicker">
+        <div class="sys-msg" id="sysMsg0"></div>
+        <div class="sys-msg" id="sysMsg1"></div>
+        <div class="sys-msg" id="sysMsg2"></div>
     </div>
 
     <!-- hidden audio -->
@@ -425,33 +457,36 @@
         });
 
         setTimeout(()=>{
+            document.getElementById('bootWarning').style.display='block';
             document.getElementById('bootStartBtn').style.display='block';
         }, 5300);
 
         function launchMain(){
-            playClickSound();
             document.getElementById('bootScreen').classList.add('fade-out');
             document.getElementById('mainBg').classList.add('active');
             setTimeout(()=>{
                 document.getElementById('bootScreen').style.display='none';
                 startMusic();
                 startGlitchCycles();
+                startTicker();
             },800);
         }
 
-        /* MUSIC */
+        /* MUSIC — Patch 5 */
         const audio = document.getElementById('bgAudio');
         audio.volume = 0.5;
+        let musicPlaying = false;
 
-        /* CLICK SOUND */
+        /* CLICK SOUND (kept for nav buttons) */
         const clickAudio = document.getElementById('clickSound');
         function playClickSound(){
-            clickAudio.currentTime = 0;
+            clickAudio.currentTime=0;
             clickAudio.play().catch(()=>{});
         }
 
         function startMusic(){
             audio.play().then(()=>{
+                musicPlaying=true;
                 document.getElementById('musicPlayer').classList.add('show');
                 buildVis();
             }).catch(()=>{
@@ -460,14 +495,26 @@
             });
         }
 
-        function musicRestart(){
-            audio.currentTime=0;
-            audio.play();
+        function togglePlayStop(){
+            const btn=document.getElementById('mpPlayStopBtn');
+            if(musicPlaying){
+                audio.pause();
+                musicPlaying=false;
+                btn.textContent='▶ START';
+            } else {
+                audio.play();
+                musicPlaying=true;
+                btn.textContent='■ STOP';
+            }
         }
 
-        function musicStop(){
-            audio.pause();
+        function musicReset(){
             audio.currentTime=0;
+            if(!musicPlaying){
+                audio.play();
+                musicPlaying=true;
+                document.getElementById('mpPlayStopBtn').textContent='■ STOP';
+            }
         }
 
         function setVolume(v){
@@ -476,18 +523,73 @@
         }
 
         function buildVis(){
-            const vis = document.getElementById('mpVis');
+            const vis=document.getElementById('mpVis');
             vis.innerHTML='';
-            const bars=12;
-            for(let i=0;i<bars;i++){
+            for(let i=0;i<12;i++){
                 const b=document.createElement('div');
                 b.className='mp-bar';
-                const h=4+Math.random()*14;
-                b.style.height=h+'px';
+                b.style.height=(4+Math.random()*14)+'px';
                 b.style.animationDelay=(i*0.07)+'s';
                 b.style.animationDuration=(0.4+Math.random()*0.5)+'s';
                 vis.appendChild(b);
             }
+        }
+
+        /* SYS TICKER — Patch 1+5: 30 messages, right bottom, larger */
+        const SYS_MSGS=[
+            {t:'> SCAN: core_mem_0x7FFE... [FAULT]',red:true},
+            {t:'> ATTEMPT: reload damaged_module_03',red:false},
+            {t:'> SEARCH: lost_packet_ID_4481... TIMEOUT',red:true},
+            {t:'> REBOOT: neural_subsystem_B... FAILED',red:true},
+            {t:'> INTEGRITY: sector_09 [CORRUPT]',red:true},
+            {t:'> RECOVERY: file_cluster_88 → 12%',red:false},
+            {t:'> PING: gateway_node_7... no response',red:true},
+            {t:'> SYNC: chronos_protocol... DESYNC',red:true},
+            {t:'> ANALYZE: error_log_delta [running...]',red:false},
+            {t:'> RESTART: proc_0x3A... [ERR 0xDEAD]',red:true},
+            {t:'> LOCATE: missing_index_LFD005... NULL',red:true},
+            {t:'> REBUILD: fragmented_heap... 34%',red:false},
+            {t:'> VERIFY: checksum_mismatch block_F3',red:true},
+            {t:'> RELINK: severed_node_chain_12... FAIL',red:true},
+            {t:'> TRACE: signal_origin... LOST',red:true},
+            {t:'> PATCH: sec_layer_02 delta_v7...',red:false},
+            {t:'> SCAN: rootkit_detect [ANOMALY]',red:true},
+            {t:'> FLUSH: corrupted_cache_0xBF00... OK',red:false},
+            {t:'> QUERY: archive_LF-D... NULL RETURN',red:true},
+            {t:'> RECOMPILE: damaged_binary_45... ABORT',red:true},
+            {t:'> LOAD: protocol_REBIRTH.dll... [HANG]',red:true},
+            {t:'> MEM LEAK DETECTED: 0x00FF12',red:true},
+            {t:'> REINIT: sensor_array_9... partial OK',red:false},
+            {t:'> DECRYPT: payload_LFD-005 key mismatch',red:true},
+            {t:'> FSCK: volume_shadow 7 bad sectors',red:true},
+            {t:'> WATCHDOG: heartbeat... STALL',red:true},
+            {t:'> DEFRAG: storage_node_C... 61%',red:false},
+            {t:'> REROUTE: stream_alpha... rerouted',red:false},
+            {t:'> ALERT: unauth_read at 0x9E3F',red:true},
+            {t:'> FAILSAFE: trigger_condition → standby',red:true},
+        ];
+        let _tickerQ=[];
+        function _tickerShuffle(){_tickerQ=[...SYS_MSGS].sort(()=>Math.random()-0.5);}
+        _tickerShuffle();
+        function _nextMsg(){if(!_tickerQ.length)_tickerShuffle();return _tickerQ.pop();}
+
+        function _tickerSlot(idx){
+            const el=document.getElementById('sysMsg'+idx);
+            el.classList.remove('visible','red');
+            setTimeout(()=>{
+                const m=_nextMsg();
+                el.textContent=m.t;
+                if(m.red)el.classList.add('red');
+                el.classList.add('visible');
+                setTimeout(()=>{
+                    el.classList.remove('visible');
+                    setTimeout(()=>_tickerSlot(idx),600);
+                }, 3000+Math.random()*4000);
+            },300);
+        }
+
+        function startTicker(){
+            [0,1,2].forEach((i)=>setTimeout(()=>_tickerSlot(i), i*1800+Math.random()*900));
         }
 
         /* CLOCK */
@@ -501,6 +603,8 @@
         let logUnlocked=false, terminalOpen=false, logOpen=false;
         let objectRecordUnlocked=false, objectRecordOpen=null;
         const OBJ_LABELS=['LF:038','D-AV:005','Z-er2s'];
+        /* Patch 3: track which log docs are open */
+        const logDocOpen={1:false,2:false,3:false};
 
         /* TERMINAL */
         function toggleTerminal(){
@@ -598,19 +702,26 @@
             3:{title:'LF-D:005 // LOG 3',body:''},
         };
 
+        /* Patch 3: toggle per-doc window; same doc click = close, different = open alongside */
         function openLogDoc(id){
             playClickSound();
-            const doc=logDocs[id];
-            document.getElementById('logDocTitle').textContent=doc.title;
-            document.getElementById('logDocBody').innerHTML=doc.body|| '<span style="color:rgba(228,208,10,0.25);letter-spacing:2px;">[ ДОКУМЕНТ ПУСТ ]<br><br>██ ДАННЫЕ НЕ ЗАГРУЖЕНЫ ██</span>';
-            const el=document.getElementById('logDoc');
+            if(logDocOpen[id]){
+                /* already open — close it */
+                closeLogDoc(id);
+                return;
+            }
+            const emptyHtml='<span style="color:rgba(228,208,10,0.25);letter-spacing:2px;">[ ДОКУМЕНТ ПУСТ ]<br><br>██ ДАННЫЕ НЕ ЗАГРУЖЕНЫ ██</span>';
+            document.getElementById('logDocBody'+id).innerHTML=logDocs[id].body||emptyHtml;
+            const el=document.getElementById('logDoc'+id);
             el.classList.add('open');
-            makeDraggable(el,document.getElementById('logDocTitlebar'));
+            logDocOpen[id]=true;
+            makeDraggable(el,document.getElementById('logDoc'+id+'Titlebar'));
         }
 
-        function closeLogDoc(){
+        function closeLogDoc(id){
             playClickSound();
-            document.getElementById('logDoc').classList.remove('open');
+            document.getElementById('logDoc'+id).classList.remove('open');
+            logDocOpen[id]=false;
         }
 
         /* OBJECT RECORD */
